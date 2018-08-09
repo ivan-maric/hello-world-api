@@ -27,7 +27,7 @@ const server = http.createServer(function(req,res){
         const data = {
             trimmedPath,
             method,
-            incomingPayload: buffer
+            incomingPayload: bufferParser(buffer)
         };
 
         chosenHandler(data, function(statusCode, outgoingPayload){
@@ -68,3 +68,16 @@ handlers.notFound = function(data,callback){
 const router = {
     'hello' : handlers.hello
 };
+
+function bufferParser(buffer) {
+    let obj;
+
+    try {
+        obj = JSON.parse(buffer);
+    }
+    catch(error) {
+        obj = buffer;
+    }
+
+    return obj;
+}
